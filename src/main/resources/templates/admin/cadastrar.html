@@ -37,7 +37,7 @@
 
             <div class="mb-3" >
                 <label for="exampleFormControlInput3" class="form-label">Imagem:</label>
-                <input type="file" name="file" class="form-control" id="exampleFormControlInput4" placeholder="">
+                <input type="file" name="file" class="form-control" id="exampleFormControlInput4" placeholder="" accept="image/png, image/jpeg">
                 <p class="text-danger" th:if="${#fields.hasErrors('imageUri')}" th:errors="*{imageUri}"></p>
             </div>
 

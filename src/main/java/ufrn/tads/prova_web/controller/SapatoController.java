@@ -20,6 +20,8 @@ import ufrn.tads.prova_web.service.FileStorageService;
 import ufrn.tads.prova_web.service.SapatoService;
 import ufrn.tads.prova_web.service.UsuarioService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -47,8 +49,9 @@ public class SapatoController {
         List<Sapato> sapatos = service.findByDeletedIsNull();
         model.addAttribute("sapatos",sapatos);
 
-        Date dataHora = new Date();
-        Cookie c = new Cookie("visita", dataHora.toString());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss");
+        String dataHora = dateFormat.format(new Date());
+        Cookie c = new Cookie("visita", dataHora);
         c.setMaxAge(86400);
         response.addCookie(c);
 

@@ -17,8 +17,7 @@ import java.util.stream.Stream;
 
 @Service
 public class FileStorageService {
-    private final Path root = Paths.get("./src/main/resources/static/imgs");
-    //private final Path root = Paths.get("images");
+    private final Path root = Paths.get("src/main/webapp/WEB-INF/images");
 
     public FileStorageService(){
         //init();
@@ -38,8 +37,8 @@ public class FileStorageService {
         try {
             String fileExtension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1);
             var numAleatorio = Math.random()*40;
-            Files.copy(file.getInputStream(), this.root.resolve("sapato"+numAleatorio+"."+fileExtension));
-            return "sapato"+numAleatorio+"."+fileExtension;
+            Files.copy(file.getInputStream(), this.root.resolve(numAleatorio+"."+fileExtension));
+            return numAleatorio+"."+fileExtension;
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
                 throw new RuntimeException("A file of that name already exists.");
