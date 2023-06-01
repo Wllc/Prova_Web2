@@ -25,6 +25,7 @@ public class ProvaWebApplication implements WebMvcConfigurer {
     @Bean
     CommandLineRunner commandLineRunner(SapatoRepository sapatoRepository, UsuarioRepository usuarioRepository, PasswordEncoder encoder){
         return args -> {
+            //Descomente caso vá executar o programa a primeira vez
 //            List<Sapato> sapatos = Stream.of(
 //                    new Sapato(1L,null, "sapato1.jpg","Tênis Nike Downshifter 12", "R$ 399,99",42, "Lançamento"),
 //                    new Sapato(2L,null, "sapato2.jpg","Tênis Nike Renew Ride 3", "R$ 246,99",42, "Exclusivo")
