@@ -69,6 +69,8 @@ public class SapatoController {
 
     @GetMapping("/cadastrar")
     public String getCadastro(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("username", ""+authentication.getName());
         Sapato s = new Sapato();
         model.addAttribute("sapato", s);
         return "admin/cadastrar";
@@ -76,24 +78,26 @@ public class SapatoController {
     @PostMapping("/salvar")
     public String salvarSapato(@ModelAttribute @Valid Sapato s, Errors errors,
                                @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes){
-        if(errors.hasErrors()){
+        if(errors.hasErrors() || file.isEmpty()){
             System.out.println(Arrays.toString(errors.getAllErrors().toArray()));
             if(s.getId() == null){
-                redirectAttributes.addFlashAttribute("msg", "*Preencha os campos corretamente");
+                redirectAttributes.addFlashAttribute("msg", "*Verifique se os campos estão preenchidos corretamente");
                 return "admin/cadastrar";
             }else{
-                redirectAttributes.addFlashAttribute("msg", "*Preencha os campos corretamente");
+                redirectAttributes.addFlashAttribute("msg", "*Verifique se os campos estão preenchidos corretamente");
                 return "redirect:/editar/"+s.getId();
             }
         }else{
-            s.setImageUri(fileStorageService.save(file));
-            service.edit(s);
+            s.setImageUri(this.fileStorageService.save(file));
+            this.service.save(s);
             redirectAttributes.addFlashAttribute("msgSucesso", "Salvo com sucesso");
             return "redirect:/admin";
         }
     }
     @GetMapping("/editar/{id}")
     public String editarSapato(@PathVariable(name = "id") String id, Model model, RedirectAttributes redirectAttributes){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("username", ""+authentication.getName());
         Sapato s = service.findById(id);
         model.addAttribute("sapato", s);
 
@@ -104,7 +108,7 @@ public class SapatoController {
     public String deletarSapato(@PathVariable(name = "id") String id, RedirectAttributes redirectAttributes){
         Sapato s = service.findById(id);
         s.setDeleted(new Date(System.currentTimeMillis()));
-        service.edit(s);
+        this.service.save(s);
         redirectAttributes.addAttribute("msg", "Deletado com sucesso");
         return "redirect:/";
     }

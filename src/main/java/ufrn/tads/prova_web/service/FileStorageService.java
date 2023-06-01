@@ -37,8 +37,9 @@ public class FileStorageService {
         try {
             String fileExtension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1);
             var numAleatorio = Math.random()*40;
-            Files.copy(file.getInputStream(), this.root.resolve(numAleatorio+"."+fileExtension));
-            return numAleatorio+"."+fileExtension;
+            String img = numAleatorio+"."+fileExtension;
+            Files.copy(file.getInputStream(), this.root.resolve(img));
+            return img;
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
                 throw new RuntimeException("A file of that name already exists.");

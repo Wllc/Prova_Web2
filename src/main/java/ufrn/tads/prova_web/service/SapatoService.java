@@ -20,9 +20,6 @@ public class SapatoService {
         repository.save(s);
     }
 
-    public void edit(Sapato s){
-        repository.save(s);
-    }
 
     public List<Sapato> findAll(){
         return repository.findAll();
